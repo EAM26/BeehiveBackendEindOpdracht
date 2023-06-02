@@ -1,5 +1,6 @@
 package nl.beehive.beehivebackendeindopdracht.services;
 
+import nl.beehive.beehivebackendeindopdracht.dtos.input.EmployeeInputDto;
 import nl.beehive.beehivebackendeindopdracht.dtos.output.EmployeeOutputDto;
 import nl.beehive.beehivebackendeindopdracht.models.Employee;
 import nl.beehive.beehivebackendeindopdracht.repositories.EmployeeRepository;
@@ -31,9 +32,21 @@ public class EmployeeService {
         return this.convertEntityToDto(employee);
     }
 
+    public Long createEmployee(EmployeeInputDto employeeInputDto) {
+        Employee employee = convertDtoToEntity(employeeInputDto);
+        this.employeeRepository.save(employee);
+        return employee.getId();
+    }
+
+
 
     public EmployeeOutputDto convertEntityToDto(Employee employee) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(employee, EmployeeOutputDto.class);
+    }
+
+    public Employee convertDtoToEntity(EmployeeInputDto employeeInputDto) {
+        ModelMapper mapper = new ModelMapper();
+        return mapper.map(employeeInputDto, Employee.class);
     }
 }
