@@ -26,6 +26,12 @@ public class EmployeeService {
         return employeeOutputDtos;
     }
 
+    public EmployeeOutputDto getEmployee(Long id) throws Exception {
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new Exception());
+        return this.convertEntityToDto(employee);
+    }
+
+
     public EmployeeOutputDto convertEntityToDto(Employee employee) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(employee, EmployeeOutputDto.class);
