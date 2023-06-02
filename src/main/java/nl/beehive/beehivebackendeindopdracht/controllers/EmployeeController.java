@@ -38,7 +38,12 @@ public class EmployeeController {
         Long createdId = this.employeeService.createEmployee(employeeInputDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + createdId).toUriString());
         return new ResponseEntity<>("Employee created with id: " + createdId, HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateEmployee(@PathVariable Long id, @RequestBody EmployeeInputDto employeeInputDto) throws Exception {
+        this.employeeService.updateEmployee(id, employeeInputDto);
+        return new ResponseEntity<>("Updated", HttpStatus.ACCEPTED);
     }
 
 }

@@ -38,15 +38,27 @@ public class EmployeeService {
         return employee.getId();
     }
 
+    public void updateEmployee(Long id, EmployeeInputDto employeeInputDto) throws Exception {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new Exception());
+        this.checkAndUpdate(employee, employeeInputDto);
+        this.employeeRepository.save(employee);
+    }
 
-
-    public EmployeeOutputDto convertEntityToDto(Employee employee) {
+    private EmployeeOutputDto convertEntityToDto(Employee employee) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(employee, EmployeeOutputDto.class);
     }
 
-    public Employee convertDtoToEntity(EmployeeInputDto employeeInputDto) {
+    private Employee convertDtoToEntity(EmployeeInputDto employeeInputDto) {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(employeeInputDto, Employee.class);
+    }
+
+
+    private Employee checkAndUpdate(Employee employee, EmployeeInputDto employeeInputDto) {
+        if(employeeInputDto.firstName != null) {
+            employee.setFirstName(employeeInputDto.firstName);
+        }
+        return employee;
     }
 }
